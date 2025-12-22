@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: MessagePlatformAdapter
+metadata:
+  name: weworkfinance
+  label:
+    zh_Hans: 企业微信会话存档
+    en_US: WeWork Finance Archive
+  description:
+    zh_Hans: 企业微信会话存档轮询适配器，通过轮询方式拉取会话存档消息（只读模式）
+    en_US: WeWork Finance Archive polling adapter for retrieving chat archive messages (read-only mode)
+  icon: wework.png
+spec:
+  config:
+    - name: corpid
+      label:
+        zh_Hans: 企业 ID
+        en_US: Corporation ID
+      description:
+        zh_Hans: 企业微信的企业ID，在企业微信管理后台可以查看
+        en_US: Corporation ID from WeWork admin console
+      type: string
+      required: true
+      default: ""
+    - name: secret
+      label:
+        zh_Hans: 会话存档 Secret
+        en_US: Finance Archive Secret
+      description:
+        zh_Hans: 会话存档的密钥，在企业微信管理后台-会话内容存档中获取
+        en_US: Secret for conversation archive, obtained from WeWork admin console
+      type: string
+      required: true
+      default: ""
+    - name: rsa_private_key_path
+      label:
+        zh_Hans: RSA 私钥路径
+        en_US: RSA Private Key Path
+      description:
+        zh_Hans: RSA 私钥文件路径（用于解密消息内容），相对于程序运行目录
+        en_US: RSA private key file path for decrypting messages (relative to working directory)
+      type: string
+      required: false
+      default: "rsa_private.pem"
+    - name: polling_interval
+      label:
+        zh_Hans: 轮询间隔（秒）
+        en_US: Polling Interval (seconds)
+      description:
+        zh_Hans: 拉取消息的间隔时间，建议 5-10 秒
+        en_US: Interval between polling requests, recommended 5-10 seconds
+      type: integer
+      required: false
+      default: 5
+    - name: batch_limit
+      label:
+        zh_Hans: 每批拉取数量
+        en_US: Batch Limit
+      description:
+        zh_Hans: 每次拉取的消息数量，最大 1000
+        en_US: Number of messages per request, max 1000
+      type: integer
+      required: false
+      default: 100
+    - name: timeout
+      label:
+        zh_Hans: 超时时间（秒）
+        en_US: Timeout (seconds)
+      description:
+        zh_Hans: API 请求超时时间
+        en_US: API request timeout
+      type: integer
+      required: false
+      default: 10
+    - name: seq_save_path
+      label:
+        zh_Hans: seq 游标保存路径
+        en_US: Seq Cursor Save Path
+      description:
+        zh_Hans: 用于保存拉取进度的文件路径
+        en_US: File path for saving pull progress
+      type: string
+      required: false
+      default: "data/wework_finance_seq.txt"
+execution:
+  python:
+    path: ./weworkfinance.py
+    attr: WeWorkFinanceAdapter
