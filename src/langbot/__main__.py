@@ -1,5 +1,7 @@
 """LangBot entry point for package execution"""
 
+# 提前导入，建立正确符号链接，以避免运行时错误
+from py_weworkfinancesdk import SDK, decrypt_data
 import asyncio
 import argparse
 import sys
